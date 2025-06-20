@@ -120,3 +120,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+}
+
+@layer utilities {
+  .no-ring {
+    @apply ring-0 focus:ring-0 focus-visible:ring-0 outline-none focus:outline-none;
+  }
+}
