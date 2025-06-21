@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const urbanist = localFont({
   src: "./fonts/Urbanist-VariableFont_wght.ttf",
@@ -25,12 +26,13 @@ export default function RootLayout({
         className={`${urbanist.variable} ${urbanist.className} antialiased`}
       >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-        {children}
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

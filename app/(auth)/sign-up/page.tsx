@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
 import Link from "next/link";
 import ROUTES from "@/constants/routes";
+import AuthForm from "@/components/forms/AuthForm";
+import { SignUpSchema } from "@/lib/validations";
+import { z } from "zod";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -38,10 +34,9 @@ const SignUp = () => {
     }, 1000);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Add real sign-up API integration here
-    console.log("Submitting form with data:", form);
+  const handleSignUp = async (data: z.infer<typeof SignUpSchema>) => {
+    // Simulate success
+    console.log("Success!", data);
   };
 
   return (
@@ -51,85 +46,24 @@ const SignUp = () => {
           <CardTitle className="text-2xl text-center">Create Account</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="name" className="form-label">
-                Name
-              </label>
-              <Input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                className="no-ring"
-                placeholder="Your full name"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
-              <Input
-                type="email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                className="no-ring"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="form-label">
-                Phone Number
-              </label>
-              <Input
-                type="tel"
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                placeholder="+91XXXXXXXXXX"
-                className="no-ring"
-                required
-              />
-            </div>
-
-            {!otpSent ? (
-              <Button
-                type="button"
-                onClick={handleSendOtp}
-                className="w-full"
-                disabled={loading}
-              >
-                {loading ? "Sending OTP..." : "Send OTP"}
-              </Button>
-            ) : (
-              <div>
-                <label htmlFor="otp" className="form-label">
-                  Enter OTP
-                </label>
-                <InputOTP
-                  maxLength={4}
-                  value={form.otp}
-                  onChange={(value) => setForm({ ...form, otp: value })}
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                  </InputOTPGroup>
-                </InputOTP>
-
-                <Button type="submit" className="w-full mt-4">
-                  Complete Sign Up
-                </Button>
-              </div>
-            )}
-          </form>
-
+          <AuthForm
+            formType="SIGN_UP"
+            schema={SignUpSchema}
+            defaultValues={{
+              name: "",
+              mail_id: "",
+              mobile_number: "",
+              password: "",
+              confirmPassword: "",
+              type_of_license: "organization",
+              user_role: "admin",
+              organization_code: "",
+              organization: "",
+              department: [],
+              other_department: "",
+            }}
+            onSubmit={handleSignUp}
+          />
           <p className="mt-6 text-sm text-center text-muted-foreground">
             Already have an account?{" "}
             <Link
